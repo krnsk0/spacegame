@@ -18,15 +18,34 @@ ctx.imageSmoothingEnabled = false;
 ctx.fillStyle = 'black';
 ctx.fillRect(0, 0, width, height);
 
+const state = { stars: [] };
+
 const loop = () => {
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, width, height);
 
-  const x = Math.floor(Math.random() * width);
-  const y = Math.floor(Math.random() * height);
+  // render stars
+  state.stars.forEach((star) => {
+    ctx.fillStyle = 'white';
+    ctx.fillRect(star.x, star.y, 5, 5);
+  });
 
-  ctx.fillStyle = 'white';
-  ctx.fillRect(x, y, 10, 10);
+  const newStars = [];
+
+  // update stars
+  state.stars.forEach((star) => {
+    if (star.y <= height) {
+      newStars.push({ x: star.x, y: star.y + 5 });
+    }
+  });
+
+  // make new stars
+  const chance = Math.random();
+  if (chance > 0.95) {
+    newStars.push({ x: Math.floor(Math.random() * width), y: 0 });
+  }
+
+  state.stars = newStars;
 
   requestAnimationFrame(loop);
 };
