@@ -14,7 +14,9 @@ export const starsTick = () => {
       // move stars
       if (y <= HEIGHT) {
         dispatch(moveStar({ id, x, y: y + Math.floor(distance * STAR_STEP) }));
-      } else {
+      }
+
+      if (y > HEIGHT) {
         dispatch(removeStar({ id }));
       }
     });
@@ -43,7 +45,7 @@ const addStar = ({ id, x, y, distance }) => ({
 });
 
 const removeStar = ({ id }) => ({
-  type: ADD_STAR,
+  type: REMOVE_STAR,
   id,
 });
 
@@ -65,9 +67,8 @@ export const starsReducer = (state = {}, action) => {
     },
     [REMOVE_STAR]: () => {
       const { id } = action;
-      const newState = { ...state };
-      delete newState[id];
-      return newState;
+      delete state[id];
+      return { ...state };
     },
     [MOVE_STAR]: () => {
       const { id, x, y } = action;
