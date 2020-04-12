@@ -1,11 +1,11 @@
-import { HEIGHT, WIDTH, STAR_STEP, STAR_CHANCE } from '../config';
+import { HEIGHT, WIDTH, STAR_SPEED, STAR_CHANCE } from '../config';
 import { uuid } from '../utils/uuid';
 
 const ADD_STAR = 'ADD_STAR';
 const REMOVE_STAR = 'REMOVE_STAR';
 const MOVE_STAR = 'MOVE_STAR';
 
-export const starsTick = () => {
+export const starsTick = (delta) => {
   return (dispatch, getState) => {
     const { stars } = getState();
 
@@ -13,7 +13,7 @@ export const starsTick = () => {
     Object.entries(stars).forEach(([id, { x, y, distance }]) => {
       // move stars
       if (y <= HEIGHT) {
-        dispatch(moveStar({ id, x, y: y + Math.floor(distance * STAR_STEP) }));
+        dispatch(moveStar({ id, x, y: y + Math.floor(distance * STAR_SPEED) }));
       }
 
       if (y > HEIGHT) {
