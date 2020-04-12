@@ -1,10 +1,32 @@
-import {} from '../config';
+import { HEIGHT, WIDTH, STAR_STEP, STAR_CHANCE } from '../config';
 
 const ADD_STAR = 'ADD_STAR';
 const REMOVE_STAR = 'REMOVE_STAR';
 const MOVE_STAR = 'MOVE_STAR';
 
-export const starTick = (ms) => {
+export const starsTick = () => {
+  return (dispatch, getState) => {
+    const { stars } = getState();
+
+    // move stars
+    Object.entries(stars).forEach(([id, { x, y, distance }]) => {
+      if (y <= HEIGHT) {
+        dispatch(moveStar({ id, x, y: y + Math.floor(distance * STAR_STEP) }));
+      }
+    });
+
+    // add new stars
+    const chance = Math.random();
+    if (chance < STAR_CHANCE) {
+      dispatch(
+        addStar({
+          x: Math.floor(Math.random() * WIDTH),
+          y: 0,
+          distance: 0.5 + Math.random() * 0.5,
+        })
+      );
+    }
+  };
   // update stars
   // state.stars.forEach((star) => {
   //   if (star.y <= height) {
@@ -46,7 +68,7 @@ const moveStar = ({ id, x, y }) => ({
   y,
 });
 
-export const starReducer = (state = {}, action) => {
+export const starsReducer = (state = {}, action) => {
   const cases = {
     [ADD_STAR]: () => {
       const { id, x, y, distance } = action;

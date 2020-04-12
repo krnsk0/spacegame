@@ -1,8 +1,8 @@
-import { store } from './state/configureStore';
+import { store } from './store/configureStore';
 import { initializeCanvas } from './render/initializeCanvas';
 import { clearCanvas } from './render/clearCanvas';
 import { renderStars } from './render/renderStars';
-import { starsTick } from './state/starsModule';
+import { starsTick } from './store/starsModule';
 
 // setup canvas
 const canvas = document.getElementById('canvas');
