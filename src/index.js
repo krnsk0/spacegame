@@ -14,11 +14,11 @@ ctx.scale(pixelRatio, pixelRatio);
 ctx.mozImageSmoothingEnabled = false;
 ctx.imageSmoothingEnabled = false;
 
-// draw
-ctx.fillStyle = 'black';
-ctx.fillRect(0, 0, width, height);
-
 const state = { stars: [] };
+
+const STAR_SIZE = 5;
+const STAR_STEP = 5;
+const STAR_CHANCE = 0.2;
 
 const loop = () => {
   ctx.fillStyle = 'black';
@@ -27,7 +27,13 @@ const loop = () => {
   // render stars
   state.stars.forEach((star) => {
     ctx.fillStyle = 'white';
-    ctx.fillRect(star.x, star.y, 5, 5);
+    ctx.fillRect(star.x, star.y, STAR_SIZE, STAR_SIZE);
+
+    ctx.fillStyle = 'darkgrey';
+    ctx.fillRect(star.x, star.y - 2 * STAR_SIZE, STAR_SIZE, STAR_SIZE);
+
+    ctx.fillStyle = 'grey';
+    ctx.fillRect(star.x, star.y - 4 * STAR_SIZE, STAR_SIZE, STAR_SIZE);
   });
 
   const newStars = [];
@@ -35,13 +41,13 @@ const loop = () => {
   // update stars
   state.stars.forEach((star) => {
     if (star.y <= height) {
-      newStars.push({ x: star.x, y: star.y + 5 });
+      newStars.push({ x: star.x, y: star.y + STAR_STEP });
     }
   });
 
   // make new stars
   const chance = Math.random();
-  if (chance > 0.95) {
+  if (chance < STAR_CHANCE) {
     newStars.push({ x: Math.floor(Math.random() * width), y: 0 });
   }
 
