@@ -1,4 +1,5 @@
 import { HEIGHT, WIDTH, STAR_STEP, STAR_CHANCE } from '../config';
+import { uuid } from '../utils/uuid';
 
 const ADD_STAR = 'ADD_STAR';
 const REMOVE_STAR = 'REMOVE_STAR';
@@ -8,10 +9,13 @@ export const starsTick = () => {
   return (dispatch, getState) => {
     const { stars } = getState();
 
-    // move stars
+    // parse stars
     Object.entries(stars).forEach(([id, { x, y, distance }]) => {
+      // move stars
       if (y <= HEIGHT) {
         dispatch(moveStar({ id, x, y: y + Math.floor(distance * STAR_STEP) }));
+      } else {
+        dispatch(removeStar({ id }));
       }
     });
 
@@ -20,6 +24,7 @@ export const starsTick = () => {
     if (chance < STAR_CHANCE) {
       dispatch(
         addStar({
+          id: uuid(),
           x: Math.floor(Math.random() * WIDTH),
           y: 0,
           distance: 0.5 + Math.random() * 0.5,
@@ -27,25 +32,6 @@ export const starsTick = () => {
       );
     }
   };
-  // update stars
-  // state.stars.forEach((star) => {
-  //   if (star.y <= height) {
-  //     newStars.push({
-  //       x: star.x,
-  //       y: star.y + Math.floor(star.speed * STAR_STEP),
-  //       speed: star.speed,
-  //     });
-  //   }
-  // });
-  // make new stars
-  // const chance = Math.random();
-  // if (chance < STAR_CHANCE) {
-  //   newStars.push({
-  //     x: Math.floor(Math.random() * width),
-  //     y: 0,
-  //     speed: 0.5 + Math.random() * 0.5,
-  //   });
-  // }
 };
 
 const addStar = ({ id, x, y, distance }) => ({

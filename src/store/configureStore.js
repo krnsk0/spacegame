@@ -4,8 +4,10 @@ const configureStore = (rootReducer) => {
   let state = rootReducer(undefined, '@@GET_INITIAL_STATE');
 
   const store = {
-    getState: () => state,
-    dispatch: (actionOrThunk) => {
+    getState() {
+      return state;
+    },
+    dispatch(actionOrThunk) {
       if (typeof actionOrThunk === 'function') {
         actionOrThunk(this.dispatch, this.getState);
       } else if (typeof actionOrThunk === 'object') {
@@ -18,7 +20,7 @@ const configureStore = (rootReducer) => {
 };
 
 const rootReducer = (state, action) => ({
-  stars: starsReducer(state, action),
+  stars: starsReducer(state.stars, action),
 });
 
 export const store = configureStore(rootReducer);

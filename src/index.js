@@ -10,12 +10,10 @@ const ctx = canvas.getContext('2d');
 initializeCanvas(canvas, ctx);
 
 // clear out this stuff
-
 const loop = () => {
-  const state = store.getState();
   clearCanvas(ctx);
-  renderStars(ctx, state);
-  starsTick();
+  renderStars(ctx, store.getState());
+  store.dispatch(starsTick());
   requestAnimationFrame(loop);
 };
 
