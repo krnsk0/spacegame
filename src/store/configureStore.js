@@ -1,7 +1,7 @@
 import { starsReducer } from './starsModule';
 
 const configureStore = (rootReducer) => {
-  let state = rootReducer(undefined, '@@GET_INITIAL_STATE');
+  let state = rootReducer({}, '@@GET_INITIAL_STATE');
 
   const store = {
     getState() {
