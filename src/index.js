@@ -16,9 +16,10 @@ ctx.imageSmoothingEnabled = false;
 
 const state = { stars: [] };
 
-const STAR_SIZE = 5;
-const STAR_STEP = 5;
-const STAR_CHANCE = 0.2;
+const STAR_SIZE = 5; // pixels
+const STAR_STEP = 5; // pixels
+const STAR_CHANCE = 0.5; // 0 to 1
+const BASE_STAR_INTENSITY = 0.7; // 0 to 1
 
 const loop = () => {
   ctx.fillStyle = 'black';
@@ -26,14 +27,14 @@ const loop = () => {
 
   // render stars
   state.stars.forEach((star) => {
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = `hsla(0, 0%, 100%, ${BASE_STAR_INTENSITY * star.speed})`;
     ctx.fillRect(star.x, star.y, STAR_SIZE, STAR_SIZE);
 
-    ctx.fillStyle = 'darkgrey';
-    ctx.fillRect(star.x, star.y - 2 * STAR_SIZE, STAR_SIZE, STAR_SIZE);
+    ctx.fillStyle = `hsla(0, 0%, 75%, ${BASE_STAR_INTENSITY * star.speed})`;
+    ctx.fillRect(star.x, star.y - STAR_SIZE, STAR_SIZE, STAR_SIZE);
 
-    ctx.fillStyle = 'grey';
-    ctx.fillRect(star.x, star.y - 4 * STAR_SIZE, STAR_SIZE, STAR_SIZE);
+    ctx.fillStyle = `hsla(0, 0%, 25%, ${BASE_STAR_INTENSITY * star.speed})`;
+    ctx.fillRect(star.x, star.y - 2 * STAR_SIZE, STAR_SIZE, STAR_SIZE);
   });
 
   const newStars = [];
@@ -41,14 +42,22 @@ const loop = () => {
   // update stars
   state.stars.forEach((star) => {
     if (star.y <= height) {
-      newStars.push({ x: star.x, y: star.y + STAR_STEP });
+      newStars.push({
+        x: star.x,
+        y: star.y + Math.floor(star.speed * STAR_STEP),
+        speed: star.speed,
+      });
     }
   });
 
   // make new stars
   const chance = Math.random();
   if (chance < STAR_CHANCE) {
-    newStars.push({ x: Math.floor(Math.random() * width), y: 0 });
+    newStars.push({
+      x: Math.floor(Math.random() * width),
+      y: 0,
+      speed: 0.5 + Math.random() * 0.5,
+    });
   }
 
   state.stars = newStars;
