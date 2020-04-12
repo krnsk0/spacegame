@@ -11,8 +11,8 @@ canvas.style.width = `${width}px`;
 canvas.style.height = `${height}px`;
 canvas.style.margin = 'auto';
 ctx.scale(pixelRatio, pixelRatio);
-// ctx.mozImageSmoothingEnabled = false;
-// ctx.imageSmoothingEnabled = false;
+ctx.mozImageSmoothingEnabled = false;
+ctx.imageSmoothingEnabled = false;
 
 // draw
 ctx.fillStyle = 'black';
