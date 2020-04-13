@@ -11,14 +11,14 @@ export const starsTick = (delta) => {
     const sec = delta * 0.001;
     const baseMoveInPixels = STAR_SPEED * sec;
 
-    Object.entries(stars).forEach(([id, { x, y, distance }]) => {
+    Object.entries(stars).forEach(([id, { y, distance }]) => {
       // move stars
       if (y <= HEIGHT) {
         dispatch(
           moveStar({
             id,
-            x,
-            y: y + Math.floor(baseMoveInPixels * distance),
+            dx: 0,
+            dy: Math.floor(baseMoveInPixels * distance),
           })
         );
       }
@@ -57,11 +57,11 @@ const removeStar = ({ id }) => ({
   id,
 });
 
-const moveStar = ({ id, x, y }) => ({
+const moveStar = ({ id, dx, dy }) => ({
   type: MOVE_STAR,
   id,
-  x,
-  y,
+  dx,
+  dy,
 });
 
 export const starsReducer = (state = {}, action) => {
@@ -79,12 +79,12 @@ export const starsReducer = (state = {}, action) => {
       return { ...state };
     },
     [MOVE_STAR]: () => {
-      const { id, x, y } = action;
+      const { id, dx, dy } = action;
       return {
         ...state,
         [id]: {
-          x,
-          y,
+          x: state[id].x + dx,
+          y: state[id].y + dy,
           distance: state[id].distance,
         },
       };

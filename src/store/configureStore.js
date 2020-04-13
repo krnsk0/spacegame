@@ -1,4 +1,5 @@
 import { starsReducer } from './starsModule';
+import { playerReducer } from './playerModule';
 
 const configureStore = (rootReducer) => {
   let state = rootReducer({}, '@@GET_INITIAL_STATE');
@@ -21,6 +22,7 @@ const configureStore = (rootReducer) => {
 
 const rootReducer = (state, action) => ({
   stars: starsReducer(state.stars, action),
+  player: playerReducer(state.player, action),
 });
 
 export const store = configureStore(rootReducer);
