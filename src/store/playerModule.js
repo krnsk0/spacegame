@@ -15,40 +15,39 @@ const UPDATE_PLAYER_VELOCITY = 'UPDATE_PLAYER_VELOCITY';
 export const playerTick = (delta) => {
   return (dispatch, getState) => {
     const {
-      player: { xVel, yVel, keys },
+      player: { dx, dy, keys },
     } = getState();
 
-    // const sec = delta * 0.001;
-    // const baseMoveInPixels = PLAYER_BASE_SPEED * sec;
+    const sec = delta * 0.001;
+    const basePixelsToMove = PLAYER_BASE_SPEED * sec;
+    dispatch(movePlayerByDelta({ basePixelsToMove }));
 
-    const dx = xVel;
-    const dy = yVel;
-    dispatch(movePlayer({ dx, dy }));
-
-    const newXVel = xVel;
-    // xVel -
-    // PLAYER_INERTIA +
-    // (keys[DIRS.LEFT] ? -PLAYER_ACCELERATION : 0) +
-    // (keys[DIRS.RIGHT] ? PLAYER_ACCELERATION : 0);
-    const newYVel = yVel;
-    // yVel -
-    // PLAYER_INERTIA +
-    // (keys[DIRS.UP] ? -PLAYER_ACCELERATION : 0) +
-    // (keys[DIRS.DOWN] ? PLAYER_ACCELERATION : 0);
-    dispatch(updatePlayerVelocity({ xVel: newXVel, yVel: newYVel }));
+    // const newYVel = Math.max(
+    //   yVel -
+    //     PLAYER_INERTIA +
+    //     (keys[DIRS.UP] ? -PLAYER_ACCELERATION : 0) +
+    //     (keys[DIRS.DOWN] ? PLAYER_ACCELERATION : 0),
+    //   0
+    // );
+    let ddx = 0;
+    let ddy = 0;
+    if (dx > 0) ddx = -PLAYER_INERTIA;
+    if (dx < 0) ddx = -PLAYER_INERTIA;
+    if (dy > 0) ddy = -PLAYER_INERTIA;
+    if (dy < 0) ddy = -PLAYER_INERTIA;
+    dispatch(updatePlayerVelocity({ ddx, ddy }));
   };
 };
 
-export const movePlayer = ({ dx, dy }) => ({
+export const movePlayerByDelta = ({ basePixelsToMove }) => ({
   type: MOVE_PLAYER,
-  dx,
-  dy,
+  basePixelsToMove,
 });
 
-export const updatePlayerVelocity = ({ xVel, yVel }) => ({
+export const updatePlayerVelocity = ({ ddx, ddy }) => ({
   type: UPDATE_PLAYER_VELOCITY,
-  xVel,
-  yVel,
+  ddx,
+  ddy,
 });
 
 export const updateKey = ({ direction, keyState }) => ({
@@ -60,8 +59,8 @@ export const updateKey = ({ direction, keyState }) => ({
 const initialState = {
   x: Math.floor(WIDTH / 2 - PLAYER_SIZE / 2),
   y: Math.floor(HEIGHT - PLAYER_SIZE * 2),
-  xVel: 0,
-  yVel: 0,
+  dx: 0, // pixels/sec, -1 to 1
+  dy: 0, // pixels/sec, -1 to 1
   keys: {
     [DIRS.UP]: false,
     [DIRS.DOWN]: false,
@@ -75,15 +74,15 @@ export const playerReducer = (state = initialState, action) => {
     [MOVE_PLAYER]: () => {
       return {
         ...state,
-        x: state.x + action.dx,
-        y: state.y + action.dy,
+        x: state.x + state.dx * action.basePixelsToMove,
+        y: state.y + state.dy * action.basePixelsToMove,
       };
     },
     [UPDATE_PLAYER_VELOCITY]: () => {
       return {
         ...state,
-        xVel: action.xVel,
-        yVel: action.yVel,
+        dx: state.dx + action.ddx,
+        dy: state.dy + action.ddy,
       };
     },
     [UPDATE_KEY_STATE]: () => {
