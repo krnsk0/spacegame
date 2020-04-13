@@ -8,14 +8,22 @@ const MOVE_STAR = 'MOVE_STAR';
 export const starsTick = (delta) => {
   return (dispatch, getState) => {
     const { stars } = getState();
+    const sec = delta * 0.001;
+    const baseMoveInPixels = STAR_SPEED * sec;
 
-    // parse stars
     Object.entries(stars).forEach(([id, { x, y, distance }]) => {
       // move stars
       if (y <= HEIGHT) {
-        dispatch(moveStar({ id, x, y: y + Math.floor(distance * STAR_SPEED) }));
+        dispatch(
+          moveStar({
+            id,
+            x,
+            y: y + Math.floor(baseMoveInPixels * distance),
+          })
+        );
       }
 
+      // remove stars
       if (y > HEIGHT) {
         dispatch(removeStar({ id }));
       }

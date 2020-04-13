@@ -11,8 +11,9 @@ initializeCanvas(canvas, ctx);
 
 // clear out this stuff
 let lastTimestamp = 0;
+
 const loop = (timestamp) => {
-  const delta = timestamp - lastTimestamp;
+  const delta = timestamp && lastTimestamp ? timestamp - lastTimestamp : 0;
   lastTimestamp = timestamp;
   clearCanvas(ctx);
   renderStars(ctx, store.getState());
