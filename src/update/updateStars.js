@@ -1,11 +1,11 @@
-import { WIDTH, HEIGHT, STAR_SPEED, STAR_SIZE, NUM_STARS } from '../config';
+import { WIDTH, HEIGHT, STAR } from '../config';
 
 const randomStarX = () => Math.floor(Math.random() * WIDTH);
-const randomStarY = () => Math.floor(Math.random() * HEIGHT) - STAR_SIZE;
-const randomStarDistance = () => 0.5 + Math.random() * 0.5;
+const randomStarY = () => Math.floor(Math.random() * HEIGHT) - STAR.SIZE;
+const randomStarDistance = () => Math.floor(Math.random() * 80);
 
 export const initializeStars = () => {
-  return Array.from({ length: NUM_STARS }, () => {
+  return Array.from({ length: STAR.NUM }, () => {
     return {
       x: randomStarX(),
       y: randomStarY(),
@@ -16,15 +16,17 @@ export const initializeStars = () => {
 
 export const updateStars = (delta, state) => {
   const sec = delta * 0.001;
-  const baseMoveInPixels = STAR_SPEED * sec;
+  const baseMoveInPixels = STAR.SPEED * sec;
 
   // update stars
   // for loop appears to be the most performant here
-  for (let i = 0; i < NUM_STARS; i += 1) {
+  for (let i = 0; i < STAR.NUM; i += 1) {
     const star = state.stars[i];
+
     // move down the screen
-    if (star.y <= HEIGHT + STAR_SIZE) {
-      star.y = star.y + Math.floor(baseMoveInPixels * star.distance);
+    if (star.y <= HEIGHT + STAR.SIZE) {
+      star.y =
+        star.y + Math.floor(baseMoveInPixels * ((star.distance + 20) / 100));
     }
     // reset to top with random x and distance
     else {
