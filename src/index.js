@@ -13,6 +13,8 @@ const state = {
   stars: initializeStars(),
 };
 
+const worker = new Worker('./worker.js');
+
 // Kick off gameloop
 let lastTimestamp = 0;
 const loop = (timestamp) => {

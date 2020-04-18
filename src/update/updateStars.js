@@ -19,7 +19,8 @@ export const updateStars = (delta, state) => {
   const baseMoveInPixels = STAR_SPEED * sec;
 
   // update stars
-  state.stars.forEach((star) => {
+  for (let i = 0; i < NUM_STARS; i += 1) {
+    const star = state.stars[i];
     // move down the screen
     if (star.y <= HEIGHT + STAR_SIZE) {
       star.y = star.y + Math.floor(baseMoveInPixels * star.distance);
@@ -30,5 +31,5 @@ export const updateStars = (delta, state) => {
       star.y = 0;
       star.distance = randomStarDistance();
     }
-  });
+  }
 };
