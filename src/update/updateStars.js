@@ -19,6 +19,7 @@ export const updateStars = (delta, state) => {
   const baseMoveInPixels = STAR_SPEED * sec;
 
   // update stars
+  // for loop appears to be the most performant here
   for (let i = 0; i < NUM_STARS; i += 1) {
     const star = state.stars[i];
     // move down the screen
