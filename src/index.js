@@ -1,30 +1,33 @@
-import { store } from './store/configureStore';
 import { initializeCanvas } from './render/initializeCanvas';
-import { setUpKeyListeners } from './utils/keypress';
 import { clearCanvas } from './render/clearCanvas';
 import { renderStars } from './render/renderStars';
-import { renderPlayer } from './render/renderPlayer';
-import { starsTick } from './store/starsModule';
-import { playerTick } from './store/playerModule';
+import { updateStars } from './update/updateStars';
 
 // setup canvas
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 initializeCanvas(canvas, ctx);
 
-// initialize controls
-setUpKeyListeners(store.dispatch);
+// initialize state
+const state = {
+  stars: [],
+};
 
 // Kick off gameloop
 let lastTimestamp = 0;
 const loop = (timestamp) => {
   const delta = timestamp && lastTimestamp ? timestamp - lastTimestamp : 0;
   lastTimestamp = timestamp;
+
+  console.time('update');
+  // update phase
+  updateStars(delta, state);
+  console.timeEnd('update');
+
+  // render phase
   clearCanvas(ctx);
-  renderStars(ctx, store.getState());
-  renderPlayer(ctx, store.getState());
-  store.dispatch(starsTick(delta));
-  store.dispatch(playerTick(delta));
+  renderStars(ctx, state);
+
   requestAnimationFrame(loop);
 };
 loop();
