@@ -1,26 +1,27 @@
 import { initializeCanvas } from './render/initializeCanvas';
 import { clearCanvas } from './render/clearCanvas';
 import { renderStars } from './render/renderStars';
-import { updateStars, initializeStars } from './update/updateStars';
+import Worker from './update/update.worker.js';
+import { MSG } from './config';
 
 // setup canvas
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 initializeCanvas(canvas, ctx);
 
-// initialize state
-const state = {
-  stars: initializeStars(),
+const worker = new Worker();
+worker.postMessage({ cmd: MSG.START });
+
+let state = {
+  stars: [],
 };
+
+worker.onmessage = (event) => {
+  if (event.data.cmd === MSG.STATE_UPDATE) state = event.data.state;
+};
+
 // Kick off gameloop
-let lastTimestamp = 0;
-const loop = (timestamp) => {
-  const delta = timestamp && lastTimestamp ? timestamp - lastTimestamp : 0;
-  lastTimestamp = timestamp;
-
-  // update phase
-  updateStars(delta, state);
-
+const loop = () => {
   // render phase
   clearCanvas(ctx);
   renderStars(ctx, state);
