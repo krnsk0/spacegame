@@ -1,7 +1,7 @@
 import { STAR_SIZE, BASE_STAR_INTENSITY } from '../config';
 
-export const renderStars = (ctx, { stars }) => {
-  stars.forEach(({ x, y, distance }) => {
+export const renderStars = (ctx, state) => {
+  state.stars.forEach(({ x, y, distance }) => {
     ctx.fillStyle = `hsla(0, 0%, 100%, ${BASE_STAR_INTENSITY * distance})`;
     ctx.fillRect(x, y, STAR_SIZE, STAR_SIZE);
 
