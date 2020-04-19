@@ -1,16 +1,9 @@
-import { WIDTH, HEIGHT, PLAYER, KEYS } from '../config';
+import { WIDTH, HEIGHT, PLAYER } from '../config';
 
 export const initializePlayer = () => {
   return {
     x: Math.floor(WIDTH / 2) - Math.floor(PLAYER.SIZE / 2),
     y: HEIGHT - 4 * PLAYER.SIZE,
-    keys: {
-      [KEYS.UP]: false,
-      [KEYS.DOWN]: false,
-      [KEYS.LEFT]: false,
-      [KEYS.RIGHT]: false,
-      [KEYS.Z]: false,
-    },
   };
 };
 
@@ -21,11 +14,11 @@ export const updatePlayer = (delta, state) => {
 
   // compute deltas
   let dx = 0;
-  if (state.player.keys.LEFT) dx -= baseMoveInPixels;
-  if (state.player.keys.RIGHT) dx += baseMoveInPixels;
+  if (state.keys.LEFT) dx -= baseMoveInPixels;
+  if (state.keys.RIGHT) dx += baseMoveInPixels;
   let dy = 0;
-  if (state.player.keys.UP) dy -= baseMoveInPixels;
-  if (state.player.keys.DOWN) dy += baseMoveInPixels;
+  if (state.keys.UP) dy -= baseMoveInPixels;
+  if (state.keys.DOWN) dy += baseMoveInPixels;
 
   // attempt move
   state.player.x = state.player.x + dx;

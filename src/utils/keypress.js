@@ -74,6 +74,8 @@ export const setUpKeyListeners = (worker) => {
       } else if (evt.keyCode === 90) {
         updateKey({
           cmd: MSG.KEY_PRESS,
+          keyConstant: KEYS.Z,
+          keyState: false,
         });
       }
     }

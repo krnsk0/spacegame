@@ -31,7 +31,8 @@ export const PLAYER = {
 };
 
 export const PLAYER_BULLETS = {
-  SIZE: 6, // pixels
-  SPEED: 800, // pixels/sec
+  SIZE: 4, // pixels
+  SPEED: 500, // pixels/sec
   MAX_BULLETS: 5,
+  COOLDOWN: 200, // ms
 };

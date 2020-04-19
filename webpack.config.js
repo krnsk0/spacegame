@@ -14,7 +14,7 @@ const base = (options) => {
       ...options.output,
     },
     mode: options.mode,
-    stats: 'minimal',
+    stats: 'normal',
     module: {
       rules: [
         {
