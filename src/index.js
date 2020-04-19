@@ -1,7 +1,8 @@
-import { initializeCanvas } from './render/initializeCanvas';
+import { initializeCanvas } from './render/initialize';
 import { makeInitialState } from './utils/initialState';
-import { clearCanvas } from './render/clearCanvas';
-import { renderStars } from './render/renderStars';
+import { setUpKeyListeners } from './utils/keypress';
+import { render } from './render/render';
+
 import Worker from './update/update.worker.js';
 import { MSG } from './config';
 
@@ -20,12 +21,12 @@ worker.onmessage = (event) => {
   if (event.data.cmd === MSG.STATE_UPDATE) state = event.data.state;
 };
 
+// setup key events
+setUpKeyListeners(worker);
+
 // Kick off gameloop
 const loop = () => {
-  // render phase
-  clearCanvas(ctx);
-  renderStars(ctx, state);
-
+  render(ctx, state);
   requestAnimationFrame(loop);
 };
 loop();
