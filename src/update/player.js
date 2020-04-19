@@ -1,14 +1,15 @@
-import { WIDTH, HEIGHT, PLAYER, DIRS } from '../config';
+import { WIDTH, HEIGHT, PLAYER, KEYS } from '../config';
 
 export const initializePlayer = () => {
   return {
     x: Math.floor(WIDTH / 2) - Math.floor(PLAYER.SIZE / 2),
     y: HEIGHT - 4 * PLAYER.SIZE,
     keys: {
-      [DIRS.UP]: false,
-      [DIRS.DOWN]: false,
-      [DIRS.LEFT]: false,
-      [DIRS.RIGHT]: false,
+      [KEYS.UP]: false,
+      [KEYS.DOWN]: false,
+      [KEYS.LEFT]: false,
+      [KEYS.RIGHT]: false,
+      [KEYS.Z]: false,
     },
   };
 };

@@ -8,11 +8,12 @@ export const MSG = {
   KEY_PRESS: 'KEY_PRESS',
 };
 
-export const DIRS = {
+export const KEYS = {
   UP: 'UP',
   DOWN: 'DOWN',
   LEFT: 'LEFT',
   RIGHT: 'RIGHT',
+  Z: 'Z',
 };
 
 export const STAR = {
@@ -24,7 +25,13 @@ export const STAR = {
 
 export const PLAYER = {
   SIZE: 10, // pixels
-  SPEED: 200, // pixels / sec
-  ACCELERATION: 100, // pixels / sec
-  INERTIA: 50, // pixels / sec
+  SPEED: 200, // pixels/sec
+  ACCELERATION: 100, // pixels/sec
+  INERTIA: 50, // pixels/sec
+};
+
+export const PLAYER_BULLETS = {
+  SIZE: 6, // pixels
+  SPEED: 800, // pixels/sec
+  MAX_BULLETS: 5,
 };

@@ -25,6 +25,6 @@ self.onmessage = (event) => {
   }
 
   if (data.cmd === MSG.KEY_PRESS) {
-    state.player.keys[data.direction] = data.keyState;
+    state.player.keys[data.keyConstant] = data.keyState;
   }
 };
